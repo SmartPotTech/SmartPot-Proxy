@@ -7,12 +7,12 @@
 2. Ejecuta el siguiente comando para construir la imagen Docker:
 
    ```bash
-   docker build -t sebastian190030/middleware-smartpot:latest .
+   docker build -t sebastian190030/proxy-smartpot:latest .
    ```
 
    **Explicación**:
    - **`docker build`**: Este comando le indica a Docker que construya una imagen basada en las instrucciones del archivo `Dockerfile`.
-   - **`-t middleware-smartpot:latest`**: Le asigna el nombre `middleware-smartpot` y la etiqueta `latest` a la imagen Docker. El nombre de la imagen puede ser cualquier nombre que desees, pero es recomendable utilizar un nombre significativo.
+   - **`-t proxy-smartpot:latest`**: Le asigna el nombre `proxy-smartpot` y la etiqueta `latest` a la imagen Docker. El nombre de la imagen puede ser cualquier nombre que desees, pero es recomendable utilizar un nombre significativo.
    - **`.`**: Este punto (`.`) especifica el directorio actual como contexto de construcción (es decir, el directorio donde se encuentra el `Dockerfile`).
 
    Este comando construye la imagen Docker según lo especificado en el `Dockerfile`, incluyendo la instalación de dependencias y la configuración de la aplicación.
@@ -40,7 +40,7 @@ Una vez que inicies sesión correctamente, Docker te permitirá subir imágenes 
 Finalmente, para subir la imagen a Docker Hub, ejecuta el siguiente comando:
 
 ```bash
-docker push sebastian190030/middleware-smartpot:latest
+docker push sebastian190030/proxy-smartpot:latest
 ```
 
 **Explicación**:

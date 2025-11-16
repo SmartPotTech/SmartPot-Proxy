@@ -1,4 +1,5 @@
 import httpx
+
 from app.settings import API_URL
 
 

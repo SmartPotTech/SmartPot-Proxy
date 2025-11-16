@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app/
 
 # Exponer el puerto en el que FastAPI servirá la aplicación
-EXPOSE 8091
+EXPOSE 8092
 
-# Comando para ejecutar la aplicación con Uvicorn
-CMD ["uvicorn", "SmartPot-Middleware.app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8091"]
+# Comando para ejecutar la aplicación con Uvicorn (sin --reload en producción)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8092"]
