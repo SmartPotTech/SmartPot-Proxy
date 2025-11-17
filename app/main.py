@@ -3,15 +3,17 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from settings import API_URL, CLEAN_HEADERS
-app = FastAPI(title="SmartPot API Proxy")
+from settings import API_URL, APP_TITLE, CORS_ORIGINS_LIST, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS_LIST, \
+    CORS_ALLOW_HEADERS_LIST, HEADERS
+
+app = FastAPI(title=APP_TITLE)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://wokwi.com"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=CORS_ORIGINS_LIST,
+    allow_credentials=CORS_ALLOW_CREDENTIALS,
+    allow_methods=CORS_ALLOW_METHODS_LIST,
+    allow_headers=CORS_ALLOW_HEADERS_LIST,
 )
 
 client = httpx.AsyncClient()
@@ -26,19 +28,14 @@ async def proxy_login(request: Request):
     Recibe el login JSON de Wokwi y lo reenvía a la API real.
     """
     try:
-        # 1. Tomar el body (JSON) que envía Wokwi
         body = await request.json()
 
-        # 2. Hacer la petición a la API real (Hostinger)
-        #    usando HTTP/1.1 y el User-Agent limpio.
         response = await client.post(
             f"{API_URL}/auth/login",
             json=body,
-            headers=CLEAN_HEADERS
+            headers=HEADERS
         )
 
-        # 3. Devolver la respuesta exacta (sea 200 o 400) a Wokwi
-        #    Esto pasa el token o el error de "credenciales inválidas".
         return Response(content=response.content,
                         status_code=response.status_code,
                         media_type=response.headers.get("Content-Type"))
@@ -56,28 +53,22 @@ async def proxy_create_record(request: Request):
     y lo reenvía a la API real.
     """
     try:
-        # 1. Copiamos las cabeceras limpias
-        headers = CLEAN_HEADERS.copy()
+        headers = HEADERS.copy()
 
-        # 2. Obtenemos el token que Wokwi nos está enviando
         auth_header = request.headers.get("Authorization")
         if not auth_header:
-            return JSONResponse(content={"proxy_error": "Authorization header (token) faltante"}, status_code=401)
+            return JSONResponse(content={"proxy_error": "Authorization header faltante"}, status_code=401)
 
-        # 3. Lo añadimos a las cabeceras que van a la API real
         headers["Authorization"] = auth_header
 
-        # 4. Tomamos el body (JSON) de Wokwi
         body = await request.json()
 
-        # 5. Hacemos la petición a la API real
         response = await client.post(
             f"{API_URL}/Records/Create",
             json=body,
             headers=headers
         )
 
-        # 6. Devolvemos la respuesta exacta a Wokwi
         return Response(content=response.content,
                         status_code=response.status_code,
                         media_type=response.headers.get("Content-Type"))

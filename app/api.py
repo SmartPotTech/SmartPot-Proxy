@@ -1,6 +1,7 @@
 import httpx
 
 from app.settings import API_URL
+from settings import SECURITY_SCHEME_NAME
 
 
 async def fetch_data_from_api(url: str, payload: dict, headers: dict = None):
@@ -41,7 +42,7 @@ async def create_record_api(jwt_token: str, record_data: dict) -> httpx.Response
 
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': f'Bearer {jwt_token}'
+        'Authorization': f'{SECURITY_SCHEME_NAME} {jwt_token}'
     }
 
     record_url = f"{API_URL}Records/Create"
