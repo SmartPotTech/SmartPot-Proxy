@@ -18,9 +18,11 @@ app.add_middleware(
 
 client = httpx.AsyncClient()
 
+
 @app.on_event("shutdown")
 async def close_client():
     await client.aclose()
+
 
 @app.post("/auth/login")
 async def proxy_login(request: Request):
@@ -45,6 +47,7 @@ async def proxy_login(request: Request):
             content={"proxy_error": "Error interno en el proxy", "details": str(e)},
             status_code=500
         )
+
 
 @app.post("/Records/Create")
 async def proxy_create_record(request: Request):
