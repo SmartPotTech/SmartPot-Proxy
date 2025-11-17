@@ -16,5 +16,5 @@ COPY . /app/
 # Exponer el puerto en el que FastAPI servirá la aplicación
 EXPOSE 8092
 
-# Comando para ejecutar la aplicación con Uvicorn (sin --reload en producción)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8092"]
+# Comando para ejecutar la aplicación con Uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8092"]
