@@ -3,7 +3,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from settings import API_URL, APP_TITLE, CORS_ORIGINS_LIST, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS_LIST, \
+from .settings import API_URL, APP_TITLE, CORS_ORIGINS_LIST, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS_LIST, \
     CORS_ALLOW_HEADERS_LIST, HEADERS
 
 app = FastAPI(title=APP_TITLE)

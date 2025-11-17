@@ -1,7 +1,7 @@
 import httpx
 
 from app.settings import API_URL
-from settings import SECURITY_SCHEME_NAME
+from .settings import SECURITY_SCHEME_NAME
 
 
 async def fetch_data_from_api(url: str, payload: dict, headers: dict = None):
