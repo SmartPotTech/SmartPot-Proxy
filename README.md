@@ -1,7 +1,10 @@
 # SmartPot-Proxy
 
 > [!IMPORTANT]
-> **Repositorio archivado.** Este proxy HTTP recibía la telemetría de las macetas cuando se comunicaban por HTTP. Desde la versión con MQTT, las macetas publican directamente en [SmartPot-Broker](https://github.com/SmartPotTech/SmartPot-Broker) (`mqtt.smartpot.app:8883`, TLS) y la API las lee de ahí. Se conserva solo como referencia histórica.
+> **Repositorio archivado.** Este proxy HTTP recibía la telemetría de las macetas cuando se comunicaban por HTTP. Desde
+> la versión con MQTT, las macetas publican directamente
+> en [SmartPot-Broker](https://github.com/SmartPotTech/SmartPot-Broker) (`mqtt.smartpot.app:8883`, TLS) y la API las lee
+> de ahí. Se conserva solo como referencia histórica.
 >
 > La plataforma actual está documentada en [SmartPotTech/.github](https://github.com/SmartPotTech/.github).
 
