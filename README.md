@@ -1,12 +1,9 @@
-# SmartPot-Proxy
+# SmartPot-Proxy (Deprecated / Deprecado)
 
-> [!IMPORTANT]
-> **Repositorio archivado.** Este proxy HTTP recibía la telemetría de las macetas cuando se comunicaban por HTTP. Desde
-> la versión con MQTT, las macetas publican directamente
-> en [SmartPot-Broker](https://github.com/SmartPotTech/SmartPot-Broker) (`mqtt.smartpot.app:8883`, TLS) y la API las lee
-> de ahí. Se conserva solo como referencia histórica.
->
-> La plataforma actual está documentada en [SmartPotTech/.github](https://github.com/SmartPotTech/.github).
+> [!WARNING]
+> **Deprecated / Deprecado (Legacy Architecture)**  
+> **English:** This repository contains the legacy HTTP telemetry proxy from early SmartPot prototypes prior to the MQTT architecture. It has been **deprecated and archived**. The production platform uses MQTT over TLS with [**`SmartPot-Broker`**](https://github.com/SmartPotTech/SmartPot-Broker) and [**`SmartPot-API`**](https://github.com/SmartPotTech/SmartPot-API). Preserved solely for historical reference.  
+> **Español:** Este repositorio contiene el proxy HTTP legado de los prototipos iniciales de SmartPot previo a la adopción de MQTT. Ha sido **deprecado y archivado**. La plataforma en producción opera sobre MQTT con TLS mediante [**`SmartPot-Broker`**](https://github.com/SmartPotTech/SmartPot-Broker) y [**`SmartPot-API`**](https://github.com/SmartPotTech/SmartPot-API). Conservado exclusivamente como referencia histórica.
 
 ## **1. Construcción de la Imagen Docker**
 
