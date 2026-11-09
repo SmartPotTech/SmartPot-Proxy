@@ -1,3 +1,4 @@
+import logging
 import httpx
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,6 +7,7 @@ from fastapi.responses import JSONResponse
 from .settings import API_URL, APP_TITLE, CORS_ORIGINS_LIST, CORS_ALLOW_CREDENTIALS, CORS_ALLOW_METHODS_LIST, \
     CORS_ALLOW_HEADERS_LIST, HEADERS
 
+logger = logging.getLogger("smartpot.proxy")
 app = FastAPI(title=APP_TITLE)
 
 app.add_middleware(
@@ -42,9 +44,10 @@ async def proxy_login(request: Request):
                         status_code=response.status_code,
                         media_type=response.headers.get("Content-Type"))
 
-    except Exception as e:
+    except Exception:
+        logger.exception("Proxy login request failed")
         return JSONResponse(
-            content={"proxy_error": "Error interno en el proxy", "details": str(e)},
+            content={"proxy_error": "Internal gateway error"},
             status_code=500
         )
 
@@ -76,8 +79,9 @@ async def proxy_create_record(request: Request):
                         status_code=response.status_code,
                         media_type=response.headers.get("Content-Type"))
 
-    except Exception as e:
+    except Exception:
+        logger.exception("Proxy create record request failed")
         return JSONResponse(
-            content={"proxy_error": "Error interno en el proxy", "details": str(e)},
+            content={"proxy_error": "Internal gateway error"},
             status_code=500
         )
