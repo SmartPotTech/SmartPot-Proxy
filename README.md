@@ -1,8 +1,7 @@
 # SmartPot-Proxy (Legacy Architecture Reference)
 
-> [!WARNING]
-> **Deprecated (Legacy Prototype Architecture)**  
-> This repository contains the legacy HTTP telemetry proxy from early SmartPot prototypes prior to the MQTT architecture. It has been **deprecated and archived**. The production platform operates over MQTT with TLS via [**`SmartPot-Broker`**](https://github.com/SmartPotTech/SmartPot-Broker) (EMQX 5.8.9) and [**`SmartPot-API`**](https://github.com/SmartPotTech/SmartPot-API) (Go 1.27.3). Preserved solely for historical reference.
+> [!NOTE]
+> **Legacy Stack A Architecture**: Deprecated and archived. Superseded in Canonical Stack B by direct MQTT TLS communication via [SmartPot-Broker](https://github.com/SmartPotTech/SmartPot-Broker) (EMQX 5.8.9) and [SmartPot-API](https://github.com/SmartPotTech/SmartPot-API) (Go 1.27.3 / Echo v4.16.3).
 
 ## Project Status
 
@@ -10,63 +9,64 @@
 
 ## Description
 
-SmartPot-Proxy was an early prototype reverse proxy that forwarded HTTP telemetry from ESP32 microcontrollers to the backend before the adoption of the unified MQTT v1 architecture.
+SmartPot-Proxy was an early prototype reverse proxy built with Python 3.10 and FastAPI that forwarded HTTP telemetry from ESP32 microcontrollers to the backend before the adoption of the unified MQTT v1 architecture.
 
-## 1. Docker Image Build
+```mermaid
+flowchart LR
+  subgraph legacy["Legacy Stack A · Obsolete Prototype Architecture"]
+    direction TB
+    client["IoT Client / Frontend Client"]
+    subgraph proxy["SmartPot-Proxy · Python 3.10 · FastAPI :8092"]
+      direction TB
+      login["POST /api/login<br/>Authentication Forwarding"]
+      record["POST /api/crops/{cropId}/records<br/>Telemetry Forwarding"]
+      cors["CORS & Request Forwarder<br/>httpx.AsyncClient"]
+    end
+    legacy_api["SmartPot-API-Java (Spring Boot :8080)"]
+    client -->|"HTTP REST :8092"| proxy
+    login & record --> cors
+    cors -->|"HTTP REST :8080"| legacy_api
+  end
 
-### 1. Build the Docker Image
+  subgraph migration["Evolution to Canonical Stack B"]
+    direction TB
+    note["<b>Superseded in Stack B:</b><br/>HTTP proxy bottleneck eliminated.<br/>Direct high-throughput MQTT TLS (8883)<br/>and native Go API (:8091)"]
+  end
 
-1. **Abre una terminal** y navega hasta la raíz de tu proyecto, donde se encuentra el archivo `Dockerfile`.
+  subgraph canonical["Canonical Stack B Architecture"]
+    direction TB
+    iot_b["IoT Device (Rust / MicroPython)"]
+    broker_b["SmartPot-Broker (EMQX 5.8.9 · TLS :8883)"]
+    api_b["SmartPot-API (Go 1.27.3 · Echo v4.16.3 :8091)"]
+    iot_b <-->|"MQTT over TLS :8883"| broker_b
+    broker_b <-->|"Webhook Auth / Ingest"| api_b
+  end
 
-2. Ejecuta el siguiente comando para construir la imagen Docker:
+  legacy -.->|"Replaced By"| migration
+  migration -.->|"Implemented As"| canonical
+
+  classDef leaf fill:#DDF5EA,stroke:#067A52,color:#17261F
+  classDef water fill:#E3F2FB,stroke:#1F6FA0,color:#17261F
+  classDef clay fill:#FBE9E1,stroke:#B85A38,color:#17261F
+  classDef sun fill:#FDF4DD,stroke:#C98D12,color:#17261F
+  classDef core fill:#067A52,stroke:#0B3D2B,color:#FFFFFF
+
+  class client,legacy_api,iot_b,broker_b,api_b core
+  class proxy,login,record,cors clay
+  class note sun
+  class canonical leaf
+```
+
+## Docker Image Build (Historical)
+
+1. Build the Docker container image:
 
    ```bash
    docker build -t sebastian190030/proxy-smartpot:latest .
    ```
 
-   **Explicación**:
-    - **`docker build`**: Este comando le indica a Docker que construya una imagen basada en las instrucciones del
-      archivo `Dockerfile`.
-    - **`-t proxy-smartpot:latest`**: Le asigna el nombre `proxy-smartpot` y la etiqueta `latest` a la imagen Docker. El
-      nombre de la imagen puede ser cualquier nombre que desees, pero es recomendable utilizar un nombre significativo.
-    - **`.`**: Este punto (`.`) especifica el directorio actual como contexto de construcción (es decir, el directorio
-      donde se encuentra el `Dockerfile`).
+2. Publish to container registry:
 
-   Este comando construye la imagen Docker según lo especificado en el `Dockerfile`, incluyendo la instalación de
-   dependencias y la configuración de la aplicación.
-
-## **2. Publicación de la Imagen en Docker Hub**
-
-Una vez que la imagen Docker esté lista, el siguiente paso es **subirla a Docker Hub** para poder compartirla y
-utilizarla en otros entornos.
-
-### 2.1 **Iniciar Sesión en Docker Hub**
-
-Para subir la imagen a **Docker Hub**, primero debes iniciar sesión en tu cuenta desde la terminal. Ejecuta el siguiente
-comando:
-
-```bash
-docker login
-```
-
-**Explicación**:
-
-- **`docker login`**: Este comando solicita tu **nombre de usuario** y **contraseña** de Docker Hub. Si aún no tienes
-  una cuenta, puedes crear una en [Docker Hub](https://hub.docker.com/).
-
-Una vez que inicies sesión correctamente, Docker te permitirá subir imágenes a tu cuenta de Docker Hub.
-
-### 2.2 **Subir la Imagen a Docker Hub**
-
-Finalmente, para subir la imagen a Docker Hub, ejecuta el siguiente comando:
-
-```bash
-docker push sebastian190030/proxy-smartpot:latest
-```
-
-**Explicación**:
-
-- **`docker push`**: Este comando sube la imagen etiquetada al repositorio correspondiente en Docker Hub.
-
-El proceso de subida puede tomar un tiempo, dependiendo del tamaño de la imagen y la velocidad de tu conexión a
-Internet. Una vez que termine, la imagen estará disponible en Docker Hub.
+   ```bash
+   docker push sebastian190030/proxy-smartpot:latest
+   ```
