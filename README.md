@@ -1,13 +1,20 @@
-# SmartPot-Proxy (Deprecated / Deprecado)
+# SmartPot-Proxy (Legacy Architecture Reference)
 
 > [!WARNING]
-> **Deprecated / Deprecado (Legacy Architecture)**  
-> **English:** This repository contains the legacy HTTP telemetry proxy from early SmartPot prototypes prior to the MQTT architecture. It has been **deprecated and archived**. The production platform uses MQTT over TLS with [**`SmartPot-Broker`**](https://github.com/SmartPotTech/SmartPot-Broker) and [**`SmartPot-API`**](https://github.com/SmartPotTech/SmartPot-API). Preserved solely for historical reference.  
-> **Español:** Este repositorio contiene el proxy HTTP legado de los prototipos iniciales de SmartPot previo a la adopción de MQTT. Ha sido **deprecado y archivado**. La plataforma en producción opera sobre MQTT con TLS mediante [**`SmartPot-Broker`**](https://github.com/SmartPotTech/SmartPot-Broker) y [**`SmartPot-API`**](https://github.com/SmartPotTech/SmartPot-API). Conservado exclusivamente como referencia histórica.
+> **Deprecated (Legacy Prototype Architecture)**  
+> This repository contains the legacy HTTP telemetry proxy from early SmartPot prototypes prior to the MQTT architecture. It has been **deprecated and archived**. The production platform operates over MQTT with TLS via [**`SmartPot-Broker`**](https://github.com/SmartPotTech/SmartPot-Broker) (EMQX 5.8.9) and [**`SmartPot-API`**](https://github.com/SmartPotTech/SmartPot-API) (Go 1.27.3). Preserved solely for historical reference.
 
-## **1. Construcción de la Imagen Docker**
+## Project Status
 
-### 1 **Construcción de la Imagen Docker**
+[![Build and Publish Proxy Docker Image](https://github.com/SmartPotTech/SmartPot-Proxy/actions/workflows/build-and-publish.yml/badge.svg)](https://github.com/SmartPotTech/SmartPot-Proxy/actions/workflows/build-and-publish.yml)
+
+## Description
+
+SmartPot-Proxy was an early prototype reverse proxy that forwarded HTTP telemetry from ESP32 microcontrollers to the backend before the adoption of the unified MQTT v1 architecture.
+
+## 1. Docker Image Build
+
+### 1. Build the Docker Image
 
 1. **Abre una terminal** y navega hasta la raíz de tu proyecto, donde se encuentra el archivo `Dockerfile`.
 
